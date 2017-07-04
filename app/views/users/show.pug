@@ -1,6 +1,9 @@
 extends ../layout.pug
 
 block content
-  video(loop autoplay controls=false)
-    source(src=mp4Source type="video/mp4")
-    source(src=webmSource type="video/webm")
+  if story
+    video(loop autoplay controls=false)
+      source(src=mp4Source type="video/mp4")
+      source(src=webmSource type="video/webm")
+  else
+    p Empty

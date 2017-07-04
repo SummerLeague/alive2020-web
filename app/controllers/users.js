@@ -22,19 +22,24 @@ function profile(req, res, next) {
     if (apiResponse.statusCode == 404 || apiResponse.statusCode == 500) {
       res.render("errors/404");
     } else {
-      var webmSource = _.find(body.story.storyMedia, function (item) {
-        return item.type == "webm";
-      }).url;
+      var story = null;
 
-      var mp4Source = _.find(body.story.storyMedia, function (item) {
-        return item.type == "mp4";
-      }).url;
+      if (body.story) {
+        story = {};
+
+        story.webmSource = _.find(body.story.storyMedia, function (item) {
+          return item.type == "webm";
+        }).url;
+
+        story.mp4Source = _.find(body.story.storyMedia, function (item) {
+          return item.type == "mp4";
+        }).url;
+      }
 
       res.render(
         "users/show",
         {
-          webmSource : webmSource,
-          mp4Source : mp4Source
+          story : story
         }
       );
     }
