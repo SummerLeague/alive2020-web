@@ -29,8 +29,10 @@ To run the app in debugger mode, start the app with `foreman start webDebug`. Th
 
 #### Webpack
 NOTE: This is currently outdated. Leaving this until it gets added back in.
+
 ~To build the react app (`public/bundle.js`) during development, run `webpack --watch`.~
 
 #### SCSS
 NOTE: This is currently outdated. Leaving this until it gets added back in.
+
 ~To build css files from scss on save, from your terminal `cd` into the `/public/styles` directory and run `scss --watch .:.`.~
