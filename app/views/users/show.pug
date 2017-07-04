@@ -3,7 +3,7 @@ extends ../layout.pug
 block content
   if story
     video(loop autoplay controls=false)
-      source(src=mp4Source type="video/mp4")
-      source(src=webmSource type="video/webm")
+      source(src=story.mp4Source type="video/mp4")
+      source(src=story.webmSource type="video/webm")
   else
     p Empty
