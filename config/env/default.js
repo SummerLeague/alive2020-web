@@ -3,6 +3,6 @@ module.exports = {
     alive2020ApiUrl : process.env.ALIVE2020_API_URL
   },
   express : {
-    port : process.env.PORT || 5000
+    port : process.env.PORT || 5100
   }
 }

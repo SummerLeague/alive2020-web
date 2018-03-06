@@ -4,7 +4,7 @@ var config = require("config"),
 
 
 // Actions ======================================================================
-function profile(req, res, next) {
+function show(req, res, next) {
   var username = req.params.username;
 
   // !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
@@ -39,7 +39,9 @@ function profile(req, res, next) {
       res.render(
         "users/show",
         {
-          story : story
+          data : {
+            story : story
+          }
         }
       );
     }
@@ -49,5 +51,5 @@ function profile(req, res, next) {
 
 // Exports ======================================================================
 module.exports = function(app) {
-  app.get("/:username", profile);
+  app.get("/:username", show);
 }

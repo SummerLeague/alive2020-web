@@ -18,19 +18,26 @@ Exit the postgres shell and create a new file in the root of this directory call
 Install packages needed for server: `npm install`
 
 ## Running
-To give it some life, run `foreman start web`.
+To start the app, run `npm run web`.
 
 ## Debugging
-To run the app in debugger mode, start the app with `foreman start webDebug`. This will launch a chrome inspection window that will pause on any breakpoints (`debugger` statements in your code) for inspection. Note the following:
-1. There will be an immediate breakpoint thrown on startup at the first line of code in our app.js. I'm unsure why node-debug does this but it appears to be standard. Simply click the console's "continue" icon to continue running the app.
-2. Node-debug is a little slow. You dont want to be using this for all of your development purposes.
+To run the app in debugger mode, do the following:
+
+1. Start the app with `foreman start webDebug`.
+2. Open chrome and navigate to `chrome://inspect` in the address bar.
+3. Click the Open dedicated DevTools for Node
 
 ## Development
 
 #### Webpack
-NOTE: This is currently outdated. Leaving this until it gets added back in.
+Changes to the files in `app/webpack` will automatically trigger webpack to rebuild the bundle using `webpack-dev-middleware`. In development the express app uses `webpack-dev-middleware` to automatically associate an in-memory build of the app with the main app layout, `app/views/layouts/default.ejs`. For production however you will need to actually build the bundle so that it is placed in `public/dist/`. For the time being the only way to do this is to run `npm run buildWebpackBundle`, but you could easily add this as a pre-deploy command using whatever deployment method you wind up at.
 
-~To build the react app (`public/bundle.js`) during development, run `webpack --watch`.~
+##### How is this not Single Page?
+Essentially we use the `express-ejs-layouts` package to make `ejs` function more like `erb` in terms of layouts. When a route renders its template, the template is rendered inside the layout (see `<%- body %>` in `views/layouts/default.ejs`.
+
+Inside any route specific `ejs` template where we want to hook up a React component, we use the `ejs` "helper" (to use Rails terminology... this is actually just a function defined as a `local`. See `app.locals` in `app.js`) `reactComponent`. This helper will render an element with `data-react-class` for each React component rendered through it. When our webpack bundle's entrypoint is called (see: `app/webpack/entrypoints/app.js`) it will walk over each element it finds that has a `data-react-class` and build the associated React component. Prop data for each component will be retrieved from the page data store (see how `app/webpack/utils/page_data_store.js` uses `#page-data-store`), which is also set from the `reactComponent` `ejs` helper, and made available to the component.
+
+**One critical but kind of sad detail here**: Because webpack removes unused code (tree shaking) when building its bundles, we need to keep a reference to all react components that might possibly be rendered directly via `reactComponent` (that is, components rendered from `ejs` and not those imported by other React components in general) on the `window`. Think of of this as a manifest of all of the root level components you may render for any given route. See the file `app/webpack/utils/component_manifest`. Within this file we have imported the `Foos` component, set it as a value on the `AppComponents` object, and exported the `AppComponents` object. Any time you want to use `reactComponent` from `ejs` to render a react component, you should follow this format by adding to this file.
 
 #### SCSS
 NOTE: This is currently outdated. Leaving this until it gets added back in.
