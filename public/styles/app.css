@@ -7,9 +7,11 @@ body {
   -webkit-box-pack: center;
   -webkit-justify-content: center;
   -ms-flex-pack: center;
+  height: 100vh;
   justify-content: center;
   font-size: 69px;
   margin: 0;
+  width: 100vw;
 }
 
 body * {
