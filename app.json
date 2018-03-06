@@ -1,5 +1,7 @@
 {
   "scripts": {
-    "dokku": {}
+    "dokku": {
+      "postdeploy": "npm run buildWebpackBundle"
+    }
   }
 }
