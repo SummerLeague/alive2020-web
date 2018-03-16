@@ -19,7 +19,7 @@ function show(req, res, next) {
   };
 
   client.get("stories/primary_story", { qs : qs }, function(err, apiResponse, body) {
-    if (apiResponse.statusCode == 404 || apiResponse.statusCode == 500) {
+    if (!apiResponse || apiResponse.statusCode == 404 || apiResponse.statusCode == 500) {
       res.render("errors/404");
     } else {
       var story = null;
